@@ -1,10 +1,28 @@
 {
-  "name": "WW Fixed Env (Py3.9 + CI)",
+  "name": "WW Fixed Env (Py3.9 + CausalImpact)",
   "build": {
     "dockerfile": "Dockerfile",
-    "context": ".devcontainer"
+    "context": ".."
   },
+  "remoteUser": "mambauser",
   "forwardPorts": [8888],
-  "postCreateCommand": "micromamba run -n ww-ci-39 python -c \"import sys; print('Python OK:', sys.version)\"",
-  "remoteUser": "mambauser"
+  "containerEnv": {
+    "NUMBA_DISABLE_JIT": "1"
+  },
+  "postCreateCommand": "micromamba run -n ww-ci-39 python -c \"import sys,importlib;print('Python OK:',sys.version);import pandas,numpy;print('pandas',pandas.__version__,'numpy',numpy.__version__)\"",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.jupyter-keymap",
+        "ms-toolsai.jupyter-renderers"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/conda/envs/ww-ci-39/bin/python",
+        "jupyter.jupyterServerType": "local"
+      }
+    }
+  }
 }
+
